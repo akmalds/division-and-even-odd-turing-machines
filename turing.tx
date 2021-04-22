@@ -1,0 +1,111 @@
+\documentclass[10pt]{book}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{textcomp}
+\usepackage{verbatim}
+\usepackage{mathtools}
+\usepackage{enumitem}
+\usepackage{complexity}
+\usepackage{tikz}
+\usepackage{cleveref}
+\usepackage{fancyhdr}
+\usepackage{textcomp}
+
+\usetikzlibrary{automata,positioning}
+\setlistdepth{9}
+
+\title{Division and Even Odd Turing Machines}
+%\title{Intro to Theory of Computation Examples}
+\author{Muhammad Akmal}
+\date{April 23, 2021\\All rights reserved \textcopyright \hspace{} Muhammad Akmal}
+
+
+\newcommand{\alreadyanswered}{answered in the text.}
+
+\newcommand{\angles}[1]{\textlangle{}$#1$\textrangle{}}
+
+\singlespace
+\fancyfoot{©Muhammad Akmal}
+\begin{document}
+
+\maketitle
+
+\textbf{Solution: Division's Turing Machine} 
+\begin{center}
+    
+
+\begin{tikzpicture}[shorten >=1pt,node distance=3cm,initial text={Start},on grid,auto] 
+   \node[state, initial left] (q_1)   {$q_1$}; 
+   \node[state] (q_2) [right=of q_1] {$q_2$}; 
+   \node[state] (q_3) [right=of q_2] {$q_3$};
+   \node[state] (q_4) [right=of q_3] {$q_4$};
+   \node[state] (q_5) [right=of q_4] {$q_5$};
+    \node[state] (q_6) [below=of q_4] {$q_6$};
+    \node[state] (q_7) [below=of q_2] {$q_7$};
+    \node[state] (q_8) [below=of q_5] {$q_8$};
+    \node[state] (q_9) [above=of q_1] {$q_9$};
+    \node[state, accepting] (q_1_0) [above=of q_3] {$q_1_0$};
+    
+
+    
+    \path[->] 
+    (q_1) edge [] node {$1,B\to R$} (q_2)
+          edge [] node {$/, B\to R$}(q_9)
+    
+    
+    (q_2) edge [loop above] node {$1,1\to R$$; 1,B\to R$} (q_2)
+        edge [] node {$/,/\to R$} (q_3)
+          
+    (q_3) edge [loop above] node {$1,1\to R$} (q_3)
+          edge [] node {$B,B\to L$} (q_4)
+    (q_4) edge [] node {$1,E\to L$} (q_5)
+          
+    (q_5) edge [bend right=20] node {$1,1\to L$} (q_6)
+          edge [] node {$/,/\to R$} (q_8)
+    (q_6) edge [] node {$/,/\to L$} (q_7)
+          edge [loop below] node {$1,1 \to L$ $; Z,Z \to L$} (q_8)
+    (q_7) edge [loop below] node {$1,1\to L$} (q_7)
+          edge [bend left=30] node {$B,B \to R$} (q_1)
+    (q_8) edge [loop below] node {$E,1 \to R$} (q_8)
+          edge [loop right] node {$Z,Z \to R$} (q_8)
+          edge [bend left=10] node {$B,Z \to L$} (q_6)
+    (q_9) edge [loop left] node {$1,B \to R$} (q_9)
+            edge [loop above] node {$Z,1 \to R$$; E,R \to R$} (q_9)
+          edge [bend left=10] node {$B,B \to R$} (q_1_0);
+
+          
+\end{tikzpicture}
+
+\end{center}
+        E at the end will be placed by R and R is remainder after division.\\
+        Z at the end will be placed by 1's and known as Quotient.\\
+
+\textbf{Solution: Print 1 For Even Numbers and 1 for Odd Numbers} 
+\begin{center}
+    \begin{tikzpicture}[shorten >=1pt,node distance=3cm,initial text={Start},on grid,auto]
+       \node[state, initial left] (q_1)   {$q_1$}; 
+       \node[state, accepting] (q_2)[right=of q_1]   {$q_2$}; 
+       \node[state] (q_3) [above= of q_2]  {$q_3$}; 
+       \node[state] (q_4) [right= of q_2]  {$q_4$}; 
+       \node[state] (q_5) [below= of q_2]  {$q_5$}; 
+       \node[state,  accepting] (q_6) [right= of q_4]  {$q_6$}; 
+       
+       \path[->]
+       (q_1) edge [bend left=30] node{$1,B \to R$} (q_3)
+             edge [] node{$B,1 \to R$} (q_2)
+       
+       (q_3) edge [loop above] node{$1,1 \to R$} (q_3)
+             edge [bend left=30] node{$B,B \to L$} (q_4)
+       (q_4) edge [] node{$B,0 \to R$} (q_6)
+             edge [bend left=30] node{$1,B \to L$} (q_5)
+             
+        (q_5) edge [loop below] node{$1,1 \to L$$; B,B \to L$} (q_5)
+              edge[bend left=30] node{$1,B \to R$} (q_1)
+    \end{tikzpicture}
+\end{center}
+
+
+\end{document}
